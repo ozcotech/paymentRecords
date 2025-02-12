@@ -228,7 +228,22 @@ class ExcelManager:
 
         wb.save(self.file_path)
         wb.close()
-        print("✅ Payment statuses highlighted in Excel!")        
+        print("✅ Payment statuses highlighted in Excel!")      
+
+    def get_all_payments(self):
+        """
+        Retrieves all payment records from the Excel file.
+        Returns a list of tuples containing payment data.
+        """
+        wb = self.load_workbook()
+        ws = wb.active
+        payments = []
+
+        for row in ws.iter_rows(min_row=2, max_row=ws.max_row, values_only=True):
+            payments.append(row)
+
+        wb.close()
+        return payments     
 
     def generate_payment_chart(self):
         """

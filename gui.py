@@ -1,6 +1,6 @@
 import sys
 import os
-from tkinter import Toplevel, Label, Entry, Button, messagebox
+from tkinter import Toplevel, Label, Entry, Button, messagebox, ttk
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))) 
 
@@ -171,7 +171,29 @@ class PaymentGUI:
         Button(search_window, text="Search", command=find_payment).pack(pady=10)
 
     def list_payments(self):
-        print("🔹 List All Payments Clicked")
+        """
+        Opens a window to display all payments in a table format.
+        """
+        list_window = Toplevel(self.root)
+        list_window.title("All Payments")
+        list_window.geometry("1000x400")
+
+        columns = ("Invoice No", "Task Type", "Tariff Fee", "Gross Fee", "VAT (%)",
+                "VAT Amount", "Net Fee", "Case Details", "Submission Date",
+                "Invoice Date", "Payment Status")
+
+        tree = ttk.Treeview(list_window, columns=columns, show="headings")
+
+        for col in columns:
+            tree.heading(col, text=col)
+            tree.column(col, width=100)  # Set column width
+
+        tree.pack(fill="both", expand=True)
+
+        payments = self.excel.get_all_payments()
+
+        for payment in payments:
+            tree.insert("", "end", values=payment)
 
     def analyze_payments(self):
         print("🔹 Analyze Payments Clicked")
