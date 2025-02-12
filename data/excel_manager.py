@@ -1,6 +1,8 @@
 import os
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Font, Alignment, PatternFill
+from openpyxl.chart import PieChart, Reference
+from openpyxl.chart.layout import Layout, ManualLayout
 
 class ExcelManager:
     """
@@ -244,3 +246,64 @@ class ExcelManager:
         wb.save(self.file_path)
         wb.close()
         print("✅ Payment statuses highlighted in Excel!")        
+
+    def generate_payment_chart(self):
+        """
+        Generates a pie chart showing the ratio of 'Paid' vs 'Pending' payments
+        and adds it to the Excel file.
+        """
+        wb = self.load_workbook()
+        ws = wb.active
+
+        # Count the number of 'Paid' and 'Pending' payments
+        total_paid = 0
+        total_pending = 0
+
+        for row in ws.iter_rows(min_row=2, max_row=ws.max_row, values_only=True):
+            if row[-1] == "Paid":
+                total_paid += 1
+            elif row[-1] == "Pending":
+                total_pending += 1
+
+        # If there are no payments, do not create a chart
+        if total_paid == 0 and total_pending == 0:
+            print("⚠️ No payments found. Chart will not be created.")
+            wb.close()
+            return
+
+        # Add data for the chart to a new sheet
+        chart_sheet = wb.create_sheet(title="Payment Chart")
+        chart_sheet.append(["Status", "Count"])
+        chart_sheet.append(["Paid", total_paid])
+        chart_sheet.append(["Pending", total_pending])
+
+        # Define chart data range
+        data = Reference(chart_sheet, min_col=2, min_row=2, max_row=3)
+        labels = Reference(chart_sheet, min_col=1, min_row=2, max_row=3)
+
+        # Create pie chart
+        pie_chart = PieChart()
+        pie_chart.add_data(data, titles_from_data=False)
+        pie_chart.set_categories(labels)
+
+        pie_chart.title = "Paid vs Pending Payments"
+        pie_chart.style = 2
+        
+
+        # Optimize chart layout
+        pie_chart.layout = Layout(
+            manualLayout=ManualLayout(
+                x=0.1, 
+                y=0.07,
+                w=0.8, 
+                h=0.8 
+            )
+        )
+
+        # Add chart to sheet
+        chart_sheet.add_chart(pie_chart, "E5")
+
+        # Save the workbook
+        wb.save(self.file_path)
+        wb.close()
+        print("✅ Payment chart added to Excel!")

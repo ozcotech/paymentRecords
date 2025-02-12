@@ -41,6 +41,9 @@ def main():
     # Highlight payment statuses in Excel
     excel.highlight_payments()
 
+    # Generate and add payment chart to Excel
+    excel.generate_payment_chart()
+
     # Display the list of payments
     excel.list_payments()
 
