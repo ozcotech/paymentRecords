@@ -12,7 +12,7 @@ This is a simple **payment tracking application** built with Python, Tkinter, an
 ## 🚀 Installation & Run:
 ### 1. Clone the repository:
 ```sh
-git clone https://github.com/yourusername/paymentRecords.git
+git clone https://github.com/ozcotech/paymentRecords.git
 cd paymentRecords
 ```
 ### 2. Install dependencies:
@@ -37,5 +37,5 @@ pyinstaller --onefile --windowed --paths=data --hidden-import=tkinter --hidden-i
 - **Matplotlib** 📈
 
 ---
-Made with ❤️ by [Your Name]
+Made with ❤️ by [ozcotech](https://ozco.studio)
 
