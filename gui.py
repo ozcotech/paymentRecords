@@ -90,7 +90,42 @@ class PaymentGUI:
     
 
     def update_payment_status(self):
-        print("🔹 Update Payment Status Clicked")
+        """
+        Opens a window to update the payment status.
+        """
+        update_window = Toplevel(self.root)
+        update_window.title("Update Payment Status")
+        update_window.geometry("350x200")
+
+        Label(update_window, text="Enter Invoice No:").pack()
+        invoice_entry = Entry(update_window)
+        invoice_entry.pack()
+
+        status_var = tk.StringVar()
+        status_var.set("Paid")  # Default selection
+
+        Label(update_window, text="Select New Status:").pack()
+        status_dropdown = tk.OptionMenu(update_window, status_var, "Paid", "Pending")
+        status_dropdown.pack()
+
+        def save_status():
+            invoice_no = invoice_entry.get()
+            new_status = status_var.get()
+
+            if not invoice_no:
+                messagebox.showerror("Error", "Please enter an Invoice No!")
+                return
+
+            success = self.excel.update_payment_status(invoice_no, new_status)
+
+            if success:
+                messagebox.showinfo("Success", f"Payment status updated to {new_status}!")
+            else:
+                messagebox.showerror("Error", "Invoice No not found!")
+
+            update_window.destroy()
+
+        Button(update_window, text="Update Status", command=save_status).pack(pady=10)
 
     def search_payment(self):
         print("🔹 Search Payment Clicked")

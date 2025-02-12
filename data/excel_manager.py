@@ -123,33 +123,28 @@ class ExcelManager:
         wb.close()
         print("✅ Excel formatting adjusted: column widths, row heights, and TL format applied!")
 
-    def update_payment_status(self, invoice_no, new_status="Paid"):
+    def update_payment_status(self, invoice_no, new_status):
         """
-        Updates the payment status for a specific invoice number.
-        If the invoice is not found, it prints an error message.
+        Updates the payment status (Pending <-> Paid) in the Excel file.
         """
         wb = self.load_workbook()
         ws = wb.active
-
-        found = False  # Flag to check if invoice is found
+        found = False
 
         for row in ws.iter_rows(min_row=2, max_row=ws.max_row):
-            if row[0].value == invoice_no:  # Invoice No column (first column)
-                print(f"🔄 Updating {invoice_no} from {row[-1].value} to {new_status}")
-                row[-1].value = new_status  # Update last column (Payment Status)
+            if row[0].value == invoice_no:
+                row[-1].value = new_status  # Update status in the last column
                 found = True
-                break  # Stop searching after finding the first match
+                break
 
         if found:
-            wb.save(self.file_path)  # Ensure changes are saved
+            wb.save(self.file_path)
             wb.close()
-            print(f"✅ Payment status updated for Invoice No: {invoice_no}")
-
-            # Verify the update by reloading and printing
-            self.list_payments()
+            return True
         else:
             wb.close()
-            print(f"❌ Invoice No {invoice_no} not found.")  # Print error message if invoice not found
+            return False
+
 
     def search_payment(self, invoice_no):
         """
