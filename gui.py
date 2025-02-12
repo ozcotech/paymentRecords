@@ -18,13 +18,13 @@ class PaymentGUI:
 
         tk.Label(root, text="Payment Management System", font=("Arial", 14, "bold")).pack(pady=10)
 
-        tk.Button(root, text="Add New Payment", command=self.add_payment, width=30).pack(pady=5)
-        tk.Button(root, text="Update Payment Status", command=self.update_payment_status, width=30).pack(pady=5)
-        tk.Button(root, text="Search Payment", command=self.search_payment, width=30).pack(pady=5)
-        tk.Button(root, text="List All Payments", command=self.list_payments, width=30).pack(pady=5)
-        tk.Button(root, text="Analyze Payments", command=self.analyze_payments_gui, width=30).pack(pady=5)
-        tk.Button(root, text="Generate Payment Chart", command=self.generate_chart_gui, width=30).pack(pady=5)
-        tk.Button(root, text="Exit", command=root.quit, width=30, bg="red", fg="white").pack(pady=5)
+        tk.Button(root, text="Add New Payment", command=self.add_payment, width=20).pack(pady=5)
+        tk.Button(root, text="Update Payment Status", command=self.update_payment_status, width=20).pack(pady=5)
+        tk.Button(root, text="Search Payment", command=self.search_payment, width=20).pack(pady=5)
+        tk.Button(root, text="List All Payments", command=self.list_payments, width=20).pack(pady=5)
+        tk.Button(root, text="Analyze Payments", command=self.analyze_payments_gui, width=20).pack(pady=5)
+        tk.Button(root, text="Generate Payment Chart", command=self.generate_chart_gui, width=20).pack(pady=5)
+        tk.Button(root, text="Exit", command=root.quit, width=20, bg="red", fg="black").pack(pady=5)
 
     def add_payment(self):
         """
