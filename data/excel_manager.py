@@ -148,31 +148,19 @@ class ExcelManager:
 
     def search_payment(self, invoice_no):
         """
-        Searches for a payment record by invoice number.
-        If found, prints the payment details.
+        Searches for a payment by Invoice No in the Excel file.
+        Returns payment details if found, otherwise returns None.
         """
         wb = self.load_workbook()
         ws = wb.active
 
         for row in ws.iter_rows(min_row=2, max_row=ws.max_row, values_only=True):
-            if row[0] == invoice_no:  # Invoice No column (first column)
-                print("\n✅ Payment Record Found:")
-                print(f"Invoice No: {row[0]}")
-                print(f"Task Type: {row[1]}")
-                print(f"Tariff Fee: {row[2]:,.2f} TL")
-                print(f"Gross Fee: {row[3]:,.2f} TL")
-                print(f"VAT (%): {row[4]}")
-                print(f"VAT Amount: {row[5]:,.2f} TL")
-                print(f"Net Fee: {row[6]:,.2f} TL")
-                print(f"Case Details: {row[7]}")
-                print(f"Submission Date: {row[8]}")
-                print(f"Invoice Date: {row[9]}")
-                print(f"Payment Status: {row[10]}")
+            if row[0] == invoice_no:
                 wb.close()
-                return  # Stop searching after finding the first match
+                return row  # Return the payment record
 
         wb.close()
-        print(f"❌ Invoice No {invoice_no} not found.")
+        return None  # Return None if not found
 
     def list_payments(self):
         """

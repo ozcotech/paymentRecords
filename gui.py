@@ -128,7 +128,47 @@ class PaymentGUI:
         Button(update_window, text="Update Status", command=save_status).pack(pady=10)
 
     def search_payment(self):
-        print("🔹 Search Payment Clicked")
+        """
+        Opens a window to search for a payment by Invoice No.
+        """
+        search_window = Toplevel(self.root)
+        search_window.title("Search Payment")
+        search_window.geometry("350x200")
+
+        Label(search_window, text="Enter Invoice No:").pack()
+        invoice_entry = Entry(search_window)
+        invoice_entry.pack()
+
+        def find_payment():
+            invoice_no = invoice_entry.get()
+
+            if not invoice_no:
+                messagebox.showerror("Error", "Please enter an Invoice No!")
+                return
+
+            payment_data = self.excel.search_payment(invoice_no)
+
+            if payment_data:
+                details = f"""
+                Invoice No: {payment_data[0]}
+                Task Type: {payment_data[1]}
+                Tariff Fee: {payment_data[2]:,.2f} TL
+                Gross Fee: {payment_data[3]:,.2f} TL
+                VAT (%): {payment_data[4]}
+                VAT Amount: {payment_data[5]:,.2f} TL
+                Net Fee: {payment_data[6]:,.2f} TL
+                Case Details: {payment_data[7]}
+                Submission Date: {payment_data[8]}
+                Invoice Date: {payment_data[9]}
+                Payment Status: {payment_data[10]}
+                """
+                messagebox.showinfo("Payment Found", details)
+            else:
+                messagebox.showerror("Error", "Invoice No not found!")
+
+            search_window.destroy()
+
+        Button(search_window, text="Search", command=find_payment).pack(pady=10)
 
     def list_payments(self):
         print("🔹 List All Payments Clicked")
