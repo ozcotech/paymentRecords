@@ -176,6 +176,7 @@ class ExcelManager:
     def analyze_payments(self):
         """
         Analyzes payment records and provides statistical insights.
+        Returns key statistics to be displayed in GUI.
         """
         wb = self.load_workbook()
         ws = wb.active
@@ -199,13 +200,8 @@ class ExcelManager:
         avg_paid = sum_paid_amounts / total_paid if total_paid > 0 else 0
         avg_pending = sum_pending_amounts / total_pending if total_pending > 0 else 0
 
-        print("\n📊 Payment Analysis:")
-        print(f"Total Payments: {total_payments}")
-        print(f"Total Paid: {total_paid} (Total Amount: {sum_paid_amounts:,.2f} TL, Avg: {avg_paid:,.2f} TL)")
-        print(f"Total Pending: {total_pending} (Total Amount: {sum_pending_amounts:,.2f} TL, Avg: {avg_pending:,.2f} TL)")
-
         wb.close()
-        
+        return total_payments, total_paid, sum_paid_amounts, avg_paid, total_pending, sum_pending_amounts, avg_pending
 
     def highlight_payments(self):
         """

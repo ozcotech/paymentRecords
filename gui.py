@@ -20,7 +20,7 @@ class PaymentGUI:
         tk.Button(root, text="Update Payment Status", command=self.update_payment_status, width=30).pack(pady=5)
         tk.Button(root, text="Search Payment", command=self.search_payment, width=30).pack(pady=5)
         tk.Button(root, text="List All Payments", command=self.list_payments, width=30).pack(pady=5)
-        tk.Button(root, text="Analyze Payments", command=self.analyze_payments, width=30).pack(pady=5)
+        tk.Button(root, text="Analyze Payments", command=self.analyze_payments_gui, width=30).pack(pady=5)
         tk.Button(root, text="Generate Payment Chart", command=self.generate_chart, width=30).pack(pady=5)
         tk.Button(root, text="Exit", command=root.quit, width=30, bg="red", fg="white").pack(pady=5)
 
@@ -195,8 +195,21 @@ class PaymentGUI:
         for payment in payments:
             tree.insert("", "end", values=payment)
 
-    def analyze_payments(self):
-        print("🔹 Analyze Payments Clicked")
+    def analyze_payments_gui(self):
+        """
+        Opens a window to display payment analysis statistics.
+        """
+        analysis_window = Toplevel(self.root)
+        analysis_window.title("Payment Analysis")
+        analysis_window.geometry("400x250")
+
+        # Get analysis results from excel_manager.py
+        total_payments, total_paid, sum_paid, avg_paid, total_pending, sum_pending, avg_pending = self.excel.analyze_payments()
+
+        # Display results in the GUI
+        Label(analysis_window, text=f"Total Payments: {total_payments}").pack()
+        Label(analysis_window, text=f"Total Paid: {total_paid} (Total: {sum_paid:,.2f} TL, Avg: {avg_paid:,.2f} TL)").pack()
+        Label(analysis_window, text=f"Total Pending: {total_pending} (Total: {sum_pending:,.2f} TL, Avg: {avg_pending:,.2f} TL)").pack()
 
     def generate_chart(self):
         print("🔹 Generate Payment Chart Clicked")
