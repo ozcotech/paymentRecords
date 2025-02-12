@@ -4,48 +4,61 @@ from models import Payment
 def main():
     excel = ExcelManager()
 
-    # Add a new payment record
-    new_payment = Payment(
-        invoice_no="AVV2025001923456789",
-        task_type="Compulsory Legal Aid ServiceCompulsory Legal Aid ServiceCompulsory Legal Aid ServiceCompulsory Legal Aid ServiceCompulsory Legal Aid ServiceCompulsory Legal Aid ServiceCompulsory Legal Aid ServiceCompulsory Legal Aid ServiceCompulsory Legal Aid ServiceCompulsory Legal Aid Service",
-        tariff_fee=2292.00,
-        gross_fee=1910.00,
-        vat_rate=20,
-        vat_amount=382.00,
-        net_fee=1528.00,
-        case_details="Giresun CB 2025/1010 Investigation",
-        submission_date="10.11.2024",
-        invoice_date="15.11.2024"
-    )
+    while True:
+        print("\n🔹 Payment Management System")
+        print("1️⃣ Add New Payment")
+        print("2️⃣ Update Payment Status")
+        print("3️⃣ Search Payment")
+        print("4️⃣ List All Payments")
+        print("5️⃣ Analyze Payments")
+        print("6️⃣ Generate Payment Chart")
+        print("0️⃣ Exit")
 
-    excel.add_payment(new_payment.to_list())
+        choice = input("Select an option: ")
 
-    # Adjust column widths and font size
-    excel.adjust_excel_formatting()
+        if choice == "1":
+            invoice_no = input("Enter Invoice No: ")
+            task_type = input("Enter Task Type: ")
+            tariff_fee = float(input("Enter Tariff Fee (TL): "))
+            gross_fee = float(input("Enter Gross Fee (TL): "))
+            vat_rate = float(input("Enter VAT Rate (%): "))
+            vat_amount = gross_fee * (vat_rate / 100)
+            net_fee = gross_fee - vat_amount
+            case_details = input("Enter Case Details: ")
+            submission_date = input("Enter Submission Date (DD.MM.YYYY): ")
+            invoice_date = input("Enter Invoice Date (DD.MM.YYYY): ")
+            payment_status = "Pending"
 
-    # Update payment status test
-    invoice_to_update = "AVV2025001923456789"
-    excel.update_payment_status(invoice_to_update, "Paid") 
+            new_payment = Payment(invoice_no, task_type, tariff_fee, gross_fee, vat_rate,
+                                  vat_amount, net_fee, case_details, submission_date, invoice_date, payment_status)
 
-    # Search for a payment record
-    invoice_to_search = "AVV2025001923456789"  # Geçerli bir invoice numarası gir
-    excel.search_payment(invoice_to_search)
+            excel.add_payment(new_payment.to_list())
+            print("✅ Payment added successfully.")
 
-    # Test için yanlış bir invoice numarası da gir
-    invalid_invoice = "INVALID2025"
-    excel.search_payment(invalid_invoice)
+        elif choice == "2":
+            invoice_no = input("Enter Invoice No to update: ")
+            new_status = input("Enter new status (Paid/Pending): ")
+            excel.update_payment_status(invoice_no, new_status)
 
-    # Analyze payment data
-    excel.analyze_payments()
+        elif choice == "3":
+            invoice_no = input("Enter Invoice No to search: ")
+            excel.search_payment(invoice_no)
 
-    # Highlight payment statuses in Excel
-    excel.highlight_payments()
+        elif choice == "4":
+            excel.list_payments()
 
-    # Generate and add payment chart to Excel
-    excel.generate_payment_chart()
+        elif choice == "5":
+            excel.analyze_payments()
 
-    # Display the list of payments
-    excel.list_payments()
+        elif choice == "6":
+            excel.generate_payment_chart()
+
+        elif choice == "0":
+            print("🚀 Exiting the system. See you later!")
+            break
+
+        else:
+            print("❌ Invalid option! Please select a valid option.")
 
 if __name__ == "__main__":
     main()
