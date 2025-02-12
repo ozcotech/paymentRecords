@@ -1,6 +1,6 @@
 import os
 from openpyxl import Workbook, load_workbook
-from openpyxl.styles import Font, Alignment
+from openpyxl.styles import Font, Alignment, PatternFill
 
 class ExcelManager:
     """
@@ -220,3 +220,27 @@ class ExcelManager:
         print(f"Total Pending: {total_pending} (Total Amount: {sum_pending_amounts:,.2f} TL, Avg: {avg_pending:,.2f} TL)")
 
         wb.close()
+        
+
+    def highlight_payments(self):
+        """
+        Highlights 'Paid' payments in green and 'Pending' payments in red in the Excel file.
+        """
+        wb = self.load_workbook()
+        ws = wb.active
+
+        # Define color fills
+        green_fill = PatternFill(start_color="C6E0B4", end_color="C6E0B4", fill_type="solid")  # Light green
+        red_fill = PatternFill(start_color="F4CCCC", end_color="F4CCCC", fill_type="solid")  # Light red
+
+        for row in ws.iter_rows(min_row=2, max_row=ws.max_row):
+            status_cell = row[-1]  # Payment Status column (last column)
+
+            if status_cell.value == "Paid":
+                status_cell.fill = green_fill  # Apply green fill
+            elif status_cell.value == "Pending":
+                status_cell.fill = red_fill  # Apply red fill
+
+        wb.save(self.file_path)
+        wb.close()
+        print("✅ Payment statuses highlighted in Excel!")        

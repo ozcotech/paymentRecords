@@ -38,6 +38,9 @@ def main():
     # Analyze payment data
     excel.analyze_payments()
 
+    # Highlight payment statuses in Excel
+    excel.highlight_payments()
+
     # Display the list of payments
     excel.list_payments()
 
