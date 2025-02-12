@@ -239,7 +239,27 @@ class ExcelManager:
             payments.append(row)
 
         wb.close()
-        return payments     
+        return payments    
+
+    def get_payment_counts(self):
+        """
+        Counts the number of Paid and Pending payments.
+        Returns (total_paid, total_pending).
+        """
+        wb = self.load_workbook()
+        ws = wb.active
+
+        total_paid = 0
+        total_pending = 0
+
+        for row in ws.iter_rows(min_row=2, max_row=ws.max_row, values_only=True):
+            if row[-1] == "Paid":
+                total_paid += 1
+            elif row[-1] == "Pending":
+                total_pending += 1
+
+        wb.close()
+        return total_paid, total_pending  
 
     def generate_payment_chart(self):
         """
@@ -301,3 +321,5 @@ class ExcelManager:
         wb.save(self.file_path)
         wb.close()
         print("✅ Payment chart added to Excel!")
+
+       

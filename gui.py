@@ -1,6 +1,8 @@
 import sys
 import os
 from tkinter import Toplevel, Label, Entry, Button, messagebox, ttk
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))) 
 
@@ -21,7 +23,7 @@ class PaymentGUI:
         tk.Button(root, text="Search Payment", command=self.search_payment, width=30).pack(pady=5)
         tk.Button(root, text="List All Payments", command=self.list_payments, width=30).pack(pady=5)
         tk.Button(root, text="Analyze Payments", command=self.analyze_payments_gui, width=30).pack(pady=5)
-        tk.Button(root, text="Generate Payment Chart", command=self.generate_chart, width=30).pack(pady=5)
+        tk.Button(root, text="Generate Payment Chart", command=self.generate_chart_gui, width=30).pack(pady=5)
         tk.Button(root, text="Exit", command=root.quit, width=30, bg="red", fg="white").pack(pady=5)
 
     def add_payment(self):
@@ -211,8 +213,33 @@ class PaymentGUI:
         Label(analysis_window, text=f"Total Paid: {total_paid} (Total: {sum_paid:,.2f} TL, Avg: {avg_paid:,.2f} TL)").pack()
         Label(analysis_window, text=f"Total Pending: {total_pending} (Total: {sum_pending:,.2f} TL, Avg: {avg_pending:,.2f} TL)").pack()
 
-    def generate_chart(self):
-        print("🔹 Generate Payment Chart Clicked")
+    def generate_chart_gui(self):
+        """
+        Opens a window to display a pie chart of Paid vs Pending payments.
+        """
+        chart_window = Toplevel(self.root)
+        chart_window.title("Payment Chart")
+        chart_window.geometry("500x400")
+
+        # Get payment data from Excel
+        total_paid, total_pending = self.excel.get_payment_counts()
+
+        if total_paid == 0 and total_pending == 0:
+            messagebox.showwarning("No Data", "No payments recorded to generate a chart.")
+            chart_window.destroy()
+            return
+
+        labels = ["Paid", "Pending"]
+        sizes = [total_paid, total_pending]
+        colors = ["green", "red"]
+
+        fig, ax = plt.subplots()
+        ax.pie(sizes, labels=labels, autopct="%1.1f%%", colors=colors, startangle=90)
+        ax.set_title("Paid vs Pending Payments")
+
+        canvas = FigureCanvasTkAgg(fig, master=chart_window)
+        canvas.get_tk_widget().pack()
+        canvas.draw()
 
 if __name__ == "__main__":
     root = tk.Tk()
