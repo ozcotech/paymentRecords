@@ -1,0 +1,42 @@
+**Payment Management System - Documentation**
+
+**Overview:**
+This program is designed to manage payments efficiently using an interactive graphical interface. Users can add, update, search, list, and analyze payment records. All data is stored in an Excel file for easy tracking and reference.
+
+---
+
+**Features:**
+1. **Add New Payment:** Allows users to enter new payment records, including invoice number, task type, fees, VAT, and case details.
+2. **Update Payment Status:** Enables users to change the payment status between "Pending" and "Paid."
+3. **Search Payment:** Lets users find specific payment records using the invoice number.
+4. **List All Payments:** Displays all stored payment records in a structured format.
+5. **Analyze Payments:** Generates statistical insights on payments, including totals, averages, and paid vs. pending counts.
+6. **Generate Payment Chart:** Creates a pie chart representation of paid and pending payments.
+
+---
+
+**Button Functions:**
+- **Add New Payment:** Opens a form where users can enter payment details.
+- **Update Payment Status:** Allows users to select an invoice and update its status.
+- **Search Payment:** Finds and displays details of a payment by its invoice number.
+- **List All Payments:** Retrieves and shows all payment records from the stored Excel file.
+- **Analyze Payments:** Provides key statistics about payments, such as the number of paid and pending transactions.
+- **Generate Chart:** Displays a visual representation of payment data in the form of a pie chart.
+- **Exit:** Closes the application.
+
+---
+
+**File Storage:**
+- All payment records are saved in an Excel file located at: `~/Documents/PRA_Records/payment_records.xlsx`
+- If the file is missing, the program will automatically create a new one upon startup.
+
+---
+
+**Important Notes:**
+- Payment amounts must be entered in numerical format (e.g., `2292.00`).
+- If the Excel file is deleted while the program is running, it must be restarted to recreate it.
+- Payment status highlighting (red for pending, green for paid) is automatically applied in the Excel file.
+- The graphical interface allows users to manage payments efficiently without manually modifying the Excel file.
+
+**Created by ozcotech from ozco.studio**
+
