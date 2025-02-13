@@ -27,7 +27,7 @@ python gui.py
 ## 📦 Build as an App:
 To create a standalone macOS app:
 ```sh
-pyinstaller --onefile --windowed --paths=data --hidden-import=tkinter --hidden-import=matplotlib --add-data "data/excel_manager.py:data" --add-data "data/models.py:data" --name "PaymentRecordsApp" gui.py
+pyinstaller --onefile --windowed --paths=data --hidden-import=tkinter --hidden-import=matplotlib --add-data "data/excel_manager.py:data" --add-data "data/models.py:data" --name "PRA" gui.py
 ```
 
 ## 🛠️ Technologies Used:
