@@ -12,25 +12,19 @@ class ExcelManager:
     def __init__(self, file_path=None):
         """
         Constructor for the ExcelManager class.
-        Ensures the correct file path is used.
+        Ensures the correct file path is used and creates the Excel file if missing.
         """
-        # Get the absolute path of the project root directory
-        base_dir = os.path.abspath(os.path.dirname(__file__))
+        base_dir = os.path.expanduser("~/Documents/PRA_Records")  # Save records in the user's Documents folder
 
-        # Ensure 'data' folder is directly under project root
-        if "data" in base_dir.split(os.sep):
-            base_dir = os.path.dirname(base_dir)  # Move up if already inside 'data'
+        if not os.path.exists(base_dir):
+            os.makedirs(base_dir)  # Create the directory if it does not exist
 
-        data_dir = os.path.join(base_dir, "data")
-        if not os.path.exists(data_dir):
-            os.makedirs(data_dir)  # Create the 'data' directory if it doesn't exist
+        self.file_path = os.path.join(base_dir, "payment_records.xlsx")  # Set the file path
+        print(f"✅ EXCEL FILE IS SAVED AT: {self.file_path}")
 
-        if file_path is None:
-            file_path = os.path.join(data_dir, "payment_records.xlsx")  # Set the correct file path
-
-        self.file_path = file_path
-
+        # 🛠 ** New added control.**: If the file does not exist, creat it automatically
         if not os.path.exists(self.file_path):
+            print("⚠️ Excel file not found, creating a new one...")
             self.create_excel_file()
     
     def create_excel_file(self):
