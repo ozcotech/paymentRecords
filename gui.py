@@ -154,11 +154,11 @@ class PaymentGUI:
                 details = f"""
                 Invoice No: {payment_data[0]}
                 Task Type: {payment_data[1]}
-                Tariff Fee: {payment_data[2]:,.2f} TL
-                Gross Fee: {payment_data[3]:,.2f} TL
+                Tariff Fee: {payment_data[2]:,.3f} TL
+                Gross Fee: {payment_data[3]:,.3f} TL
                 VAT (%): {payment_data[4]}
-                VAT Amount: {payment_data[5]:,.2f} TL
-                Net Fee: {payment_data[6]:,.2f} TL
+                VAT Amount: {payment_data[5]:,.3f} TL
+                Net Fee: {payment_data[6]:,.3f} TL
                 Case Details: {payment_data[7]}
                 Submission Date: {payment_data[8]}
                 Invoice Date: {payment_data[9]}
@@ -200,18 +200,25 @@ class PaymentGUI:
     def analyze_payments_gui(self):
         """
         Opens a window to display payment analysis statistics.
+        Shows total net and gross fee instead of average.
         """
         analysis_window = Toplevel(self.root)
         analysis_window.title("Payment Analysis")
-        analysis_window.geometry("400x250")
+        analysis_window.geometry("400x300")
 
         # Get analysis results from excel_manager.py
-        total_payments, total_paid, sum_paid, avg_paid, total_pending, sum_pending, avg_pending = self.excel.analyze_payments()
+        total_payments, total_paid, total_net_paid, total_gross_paid, total_pending, total_net_pending, total_gross_pending = self.excel.analyze_payments()
 
         # Display results in the GUI
         Label(analysis_window, text=f"Total Payments: {total_payments}").pack()
-        Label(analysis_window, text=f"Total Paid: {total_paid} (Total: {sum_paid:,.2f} TL, Avg: {avg_paid:,.2f} TL)").pack()
-        Label(analysis_window, text=f"Total Pending: {total_pending} (Total: {sum_pending:,.2f} TL, Avg: {avg_pending:,.2f} TL)").pack()
+        Label(analysis_window, text=f"Total Paid: {total_paid}").pack()
+        Label(analysis_window, text=f"Total Pending: {total_pending}").pack()
+
+        # Show total net and gross fee amounts
+        Label(analysis_window, text=f"Total Net Paid: {total_net_paid:,.3f} TL").pack()
+        Label(analysis_window, text=f"Total Gross Paid: {total_gross_paid:,.3f} TL").pack()
+        Label(analysis_window, text=f"Total Net Pending: {total_net_pending:,.3f} TL").pack()
+        Label(analysis_window, text=f"Total Gross Pending: {total_gross_pending:,.3f} TL").pack()
 
     def generate_chart_gui(self):
         """

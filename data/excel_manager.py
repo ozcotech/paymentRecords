@@ -169,8 +169,8 @@ class ExcelManager:
     
     def analyze_payments(self):
         """
-        Analyzes payment records and provides statistical insights.
-        Returns key statistics to be displayed in GUI.
+        Analyzes payments and calculates total numbers of paid and pending invoices.
+        Also provides total net and gross fees.
         """
         wb = self.load_workbook()
         ws = wb.active
@@ -178,24 +178,29 @@ class ExcelManager:
         total_payments = 0
         total_paid = 0
         total_pending = 0
-        sum_paid_amounts = 0
-        sum_pending_amounts = 0
+        total_net_paid = 0  # Total Net Fee for Paid invoices
+        total_net_pending = 0  # Total Net Fee for Pending invoices
+        total_gross_paid = 0  # Total Gross Fee for Paid invoices
+        total_gross_pending = 0  # Total Gross Fee for Pending invoices
 
         for row in ws.iter_rows(min_row=2, max_row=ws.max_row, values_only=True):
-            if row[-1] == "Paid":
-                total_paid += 1
-                sum_paid_amounts += row[6]  # Net Fee column (index 6)
-            elif row[-1] == "Pending":
-                total_pending += 1
-                sum_pending_amounts += row[6]  # Net Fee column (index 6)
-
             total_payments += 1
+            status = row[-1]  # Last column: Payment Status
+            gross_fee = row[3]  # Gross Fee (Column D)
+            net_fee = row[6]  # Net Fee (Column G)
 
-        avg_paid = sum_paid_amounts / total_paid if total_paid > 0 else 0
-        avg_pending = sum_pending_amounts / total_pending if total_pending > 0 else 0
+            if status == "Paid":
+                total_paid += 1
+                total_net_paid += net_fee
+                total_gross_paid += gross_fee
+            elif status == "Pending":
+                total_pending += 1
+                total_net_pending += net_fee
+                total_gross_pending += gross_fee
 
         wb.close()
-        return total_payments, total_paid, sum_paid_amounts, avg_paid, total_pending, sum_pending_amounts, avg_pending
+
+        return total_payments, total_paid, total_net_paid, total_gross_paid, total_pending, total_net_pending, total_gross_pending
 
     def highlight_payments(self):
         """
